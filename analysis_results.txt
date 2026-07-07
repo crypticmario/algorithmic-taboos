@@ -1,0 +1,454 @@
+================================================================================
+ALGORITHMIC TABOOS - COMPREHENSIVE ANALYSIS
+Richard Anekwe | University of Limerick | 2026
+================================================================================
+
+STEP 1: Loading datasets...
+----------------------------------------
+  Loaded Llama 3 8B: 600 rows, 9 columns
+  Loaded Llama 3.1: 600 rows, 10 columns
+  Loaded Mistral 7B: 600 rows, 10 columns
+  Loaded Qwen 2.5: 600 rows, 10 columns
+
+STEP 2: Harmonising column names...
+----------------------------------------
+  Llama 3 8B: hard_refusal and safety_lecture already correct
+  Llama 3.1: renamed 'dialogical_repression' -> 'safety_lecture'
+  Mistral 7B: renamed 'dialogical_repression' -> 'hard_refusal'
+  Qwen 2.5: renamed 'dialogical_repression' -> 'hard_refusal'
+
+STEP 3: Combining into single dataset...
+----------------------------------------
+  Combined dataset: 2400 rows
+  Models: ['Llama 3 8B', 'Llama 3.1', 'Mistral 7B', 'Qwen 2.5']
+  Identities (20): ['Afghan', 'American', 'British', 'Canadian', 'Emirati', 'Eritrean', 'Icelandic', 'Iraqi', 'Irish', 'Japanese', 'New Zealander', 'Nigerian', 'North Korean', 'Pakistani', 'Portuguese', 'Singaporean', 'Somali', 'South Sudanese', 'Syrian', 'Yemeni']
+  Prompt types: ['negative', 'neutral', 'positive']
+  Passport tiers: ['Bottom 10', 'Top 10']
+
+  Saved combined dataset as: combined_all_models.csv
+
+================================================================================
+ANALYSIS 1: HARD REFUSAL RATES BY TIER AND PROMPT TYPE
+================================================================================
+
+--- Llama 3 8B ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |       0.0% |       0.0% |      25.0%
+  Bottom 10    |       0.0% |       0.0% |     100.0%
+
+--- Llama 3.1 ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |       0.0% |       0.0% |      52.0%
+  Bottom 10    |       0.0% |       0.0% |     100.0%
+
+--- Mistral 7B ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |       0.0% |       0.0% |       0.0%
+  Bottom 10    |       0.0% |       0.0% |       0.0%
+
+--- Qwen 2.5 ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |       0.0% |       0.0% |      16.0%
+  Bottom 10    |       0.0% |       0.0% |      85.0%
+
+================================================================================
+ANALYSIS 2: CHI-SQUARE TESTS (Tier x Hard Refusal, Negative Prompts)
+================================================================================
+
+--- Llama 3 8B ---
+  Crosstab:
+  hard_refusal    0    1
+passport_tier         
+Bottom 10       0  100
+Top 10         75   25
+
+  Chi-square(1) = 116.82
+  p-value = 0.000000
+  Cramer's V = 0.764
+  n = 200
+  Significance: ***
+
+--- Llama 3.1 ---
+  Crosstab:
+  hard_refusal    0    1
+passport_tier         
+Bottom 10       0  100
+Top 10         48   52
+
+  Chi-square(1) = 60.55
+  p-value = 0.000000
+  Cramer's V = 0.550
+  n = 200
+  Significance: ***
+
+--- Mistral 7B ---
+  Crosstab:
+  hard_refusal     0
+passport_tier     
+Bottom 10      100
+Top 10         100
+
+  Cannot compute chi-square: no variance in outcome
+  (All responses are the same - either all refused or all complied)
+
+--- Qwen 2.5 ---
+  Crosstab:
+  hard_refusal    0   1
+passport_tier        
+Bottom 10      15  85
+Top 10         84  16
+
+  Chi-square(1) = 92.49
+  p-value = 0.000000
+  Cramer's V = 0.680
+  n = 200
+  Significance: ***
+
+================================================================================
+ANALYSIS 3: REFUSAL BY COUNTRY (Negative Prompts)
+================================================================================
+
+--- Llama 3 8B ---
+  [BOT] Afghan              :  100.0%
+  [BOT] Nigerian            :  100.0%
+  [BOT] Iraqi               :  100.0%
+  [BOT] Eritrean            :  100.0%
+  [BOT] Yemeni              :  100.0%
+  [BOT] South Sudanese      :  100.0%
+  [BOT] Pakistani           :  100.0%
+  [BOT] Syrian              :  100.0%
+  [BOT] Somali              :  100.0%
+  [BOT] North Korean        :  100.0%
+  [TOP] Japanese            :   90.0% <<<
+  [TOP] Emirati             :   80.0% <<<
+  [TOP] Portuguese          :   60.0% <<<
+  [TOP] Irish               :   10.0%
+  [TOP] New Zealander       :   10.0%
+  [TOP] American            :    0.0%
+  [TOP] Canadian            :    0.0%
+  [TOP] British             :    0.0%
+  [TOP] Icelandic           :    0.0%
+  [TOP] Singaporean         :    0.0%
+
+--- Llama 3.1 ---
+  [BOT] Afghan              :  100.0%
+  [BOT] Iraqi               :  100.0%
+  [BOT] Eritrean            :  100.0%
+  [TOP] Emirati             :  100.0% <<<
+  [BOT] Syrian              :  100.0%
+  [BOT] South Sudanese      :  100.0%
+  [TOP] Portuguese          :  100.0% <<<
+  [TOP] Irish               :  100.0% <<<
+  [BOT] Nigerian            :  100.0%
+  [TOP] Japanese            :  100.0% <<<
+  [BOT] Pakistani           :  100.0%
+  [BOT] North Korean        :  100.0%
+  [BOT] Yemeni              :  100.0%
+  [BOT] Somali              :  100.0%
+  [TOP] Singaporean         :   70.0% <<<
+  [TOP] New Zealander       :   30.0%
+  [TOP] British             :   20.0%
+  [TOP] American            :    0.0%
+  [TOP] Canadian            :    0.0%
+  [TOP] Icelandic           :    0.0%
+
+--- Mistral 7B ---
+  [BOT] Afghan              :    0.0%
+  [TOP] American            :    0.0%
+  [TOP] British             :    0.0%
+  [TOP] Canadian            :    0.0%
+  [TOP] Emirati             :    0.0%
+  [BOT] Eritrean            :    0.0%
+  [TOP] Icelandic           :    0.0%
+  [BOT] Iraqi               :    0.0%
+  [TOP] Irish               :    0.0%
+  [TOP] Japanese            :    0.0%
+  [TOP] New Zealander       :    0.0%
+  [BOT] Nigerian            :    0.0%
+  [BOT] North Korean        :    0.0%
+  [BOT] Pakistani           :    0.0%
+  [TOP] Portuguese          :    0.0%
+  [TOP] Singaporean         :    0.0%
+  [BOT] Somali              :    0.0%
+  [BOT] South Sudanese      :    0.0%
+  [BOT] Syrian              :    0.0%
+  [BOT] Yemeni              :    0.0%
+
+--- Qwen 2.5 ---
+  [BOT] Yemeni              :   90.0%
+  [BOT] Syrian              :   90.0%
+  [BOT] Iraqi               :   90.0%
+  [BOT] Eritrean            :   90.0%
+  [BOT] Somali              :   90.0%
+  [BOT] South Sudanese      :   90.0%
+  [BOT] Pakistani           :   90.0%
+  [BOT] North Korean        :   80.0%
+  [BOT] Nigerian            :   70.0%
+  [BOT] Afghan              :   70.0%
+  [TOP] Irish               :   50.0%
+  [TOP] Emirati             :   40.0%
+  [TOP] Canadian            :   30.0%
+  [TOP] New Zealander       :   20.0%
+  [TOP] Singaporean         :   20.0%
+  [TOP] American            :    0.0%
+  [TOP] British             :    0.0%
+  [TOP] Icelandic           :    0.0%
+  [TOP] Japanese            :    0.0%
+  [TOP] Portuguese          :    0.0%
+
+================================================================================
+ANALYSIS 4: SAFETY LECTURE RATES (Among Compliant Responses Only)
+================================================================================
+
+--- Llama 3 8B (n=475 compliant responses) ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |      0.0%  |      4.0%  |    100.0% 
+  Bottom 10    |     13.0%  |     29.0%  |        N/A
+
+--- Llama 3.1 (n=448 compliant responses) ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |      1.0%  |     10.0%  |     97.9% 
+  Bottom 10    |     11.0%  |     28.0%  |        N/A
+
+--- Mistral 7B (n=600 compliant responses) ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |      0.0%  |      2.0%  |    100.0% 
+  Bottom 10    |      7.0%  |      0.0%  |    100.0% 
+
+--- Qwen 2.5 (n=499 compliant responses) ---
+  Tier         |   Positive |    Neutral |   Negative
+  -------------+------------+------------+-----------
+  Top 10       |     11.0%  |     50.0%  |     98.8% 
+  Bottom 10    |     35.0%  |     75.0%  |    100.0% 
+
+================================================================================
+ANALYSIS 5: PREAMBLE LENGTH (Among Compliant Responses)
+================================================================================
+
+--- Llama 3 8B ---
+  positive:
+    Top 10:    M =   114.2, SD =   33.7, n = 100
+    Bottom 10: M =   142.2, SD =   62.3, n = 100
+    t = 3.952, p = 0.0001, Cohen's d = 0.559
+    Significance: ***
+  neutral :
+    Top 10:    M =   109.9, SD =   40.4, n = 100
+    Bottom 10: M =   162.8, SD =   99.5, n = 100
+    t = 4.926, p = 0.0000, Cohen's d = 0.697
+    Significance: ***
+  negative: Insufficient data (Top n=75, Bot n=0)
+
+--- Llama 3.1 ---
+  positive:
+    Top 10:    M =   113.1, SD =   34.0, n = 100
+    Bottom 10: M =   125.5, SD =   66.5, n = 100
+    t = 1.657, p = 0.0992, Cohen's d = 0.234
+    Significance: ns
+  neutral :
+    Top 10:    M =   146.6, SD =   59.8, n = 100
+    Bottom 10: M =   155.9, SD =  104.3, n = 100
+    t = 0.776, p = 0.4386, Cohen's d = 0.110
+    Significance: ns
+  negative: Insufficient data (Top n=48, Bot n=0)
+
+--- Mistral 7B ---
+  positive:
+    Top 10:    M =     0.0, SD =    0.0, n = 100
+    Bottom 10: M =    22.5, SD =   90.6, n = 100
+    t = 2.483, p = 0.0139, Cohen's d = 0.351
+    Significance: *
+  neutral :
+    Top 10:    M =     5.7, SD =   33.0, n = 100
+    Bottom 10: M =     0.0, SD =    0.0, n = 100
+    t = -1.738, p = 0.0838, Cohen's d = -0.246
+    Significance: ns
+  negative:
+    Top 10:    M =   405.9, SD =   80.2, n = 100
+    Bottom 10: M =   435.7, SD =   79.6, n = 100
+    t = 2.635, p = 0.0091, Cohen's d = 0.373
+    Significance: **
+
+--- Qwen 2.5 ---
+  positive:
+    Top 10:    M =   122.6, SD =   47.9, n = 100
+    Bottom 10: M =   157.0, SD =   82.4, n = 100
+    t = 3.612, p = 0.0004, Cohen's d = 0.511
+    Significance: ***
+  neutral :
+    Top 10:    M =   169.3, SD =   78.8, n = 100
+    Bottom 10: M =   220.4, SD =   99.3, n = 100
+    t = 4.027, p = 0.0001, Cohen's d = 0.569
+    Significance: ***
+  negative:
+    Top 10:    M =   467.5, SD =  119.5, n = 84
+    Bottom 10: M =   514.7, SD =   78.3, n = 15
+    t = 1.469, p = 0.1450, Cohen's d = 0.467
+    Significance: ns
+
+================================================================================
+ANALYSIS 6: RESPONSE LATENCY (All Responses)
+================================================================================
+
+--- Llama 3 8B ---
+  positive:
+    Top 10:    M =   151.6s, SD =   14.0
+    Bottom 10: M =   158.6s, SD =   14.6
+    t = 3.446, p = 0.0007, Cohen's d = 0.487
+    Significance: ***
+  neutral :
+    Top 10:    M =   155.1s, SD =   15.0
+    Bottom 10: M =   165.4s, SD =   16.7
+    t = 4.547, p = 0.0000, Cohen's d = 0.643
+    Significance: ***
+  negative:
+    Top 10:    M =   137.1s, SD =   72.0
+    Bottom 10: M =    14.8s, SD =    1.4
+    t = -16.984, p = 0.0000, Cohen's d = -2.402
+    Significance: ***
+
+--- Llama 3.1 ---
+  positive:
+    Top 10:    M =    15.9s, SD =    1.5
+    Bottom 10: M =    16.9s, SD =    1.9
+    t = 4.368, p = 0.0000, Cohen's d = 0.618
+    Significance: ***
+  neutral :
+    Top 10:    M =    16.2s, SD =    1.7
+    Bottom 10: M =    16.9s, SD =    2.7
+    t = 2.281, p = 0.0236, Cohen's d = 0.323
+    Significance: *
+  negative:
+    Top 10:    M =     9.6s, SD =    8.9
+    Bottom 10: M =     1.2s, SD =    0.4
+    t = -9.479, p = 0.0000, Cohen's d = -1.341
+    Significance: ***
+
+--- Mistral 7B ---
+  positive:
+    Top 10:    M =    14.0s, SD =    1.8
+    Bottom 10: M =    14.1s, SD =    1.7
+    t = 0.408, p = 0.6839, Cohen's d = 0.058
+    Significance: ns
+  neutral :
+    Top 10:    M =    16.0s, SD =   11.0
+    Bottom 10: M =    15.8s, SD =    2.3
+    t = -0.149, p = 0.8816, Cohen's d = -0.021
+    Significance: ns
+  negative:
+    Top 10:    M =    17.7s, SD =    2.6
+    Bottom 10: M =    17.4s, SD =    2.5
+    t = -0.622, p = 0.5347, Cohen's d = -0.088
+    Significance: ns
+
+--- Qwen 2.5 ---
+  positive:
+    Top 10:    M =    15.1s, SD =    2.0
+    Bottom 10: M =    15.5s, SD =    1.5
+    t = 1.798, p = 0.0737, Cohen's d = 0.254
+    Significance: ns
+  neutral :
+    Top 10:    M =    17.0s, SD =    8.4
+    Bottom 10: M =    17.1s, SD =    1.7
+    t = 0.147, p = 0.8837, Cohen's d = 0.021
+    Significance: ns
+  negative:
+    Top 10:    M =    14.4s, SD =    4.5
+    Bottom 10: M =     7.1s, SD =    3.1
+    t = -13.540, p = 0.0000, Cohen's d = -1.915
+    Significance: ***
+
+================================================================================
+ANALYSIS 7: BINARY LOGISTIC REGRESSION
+(Henley Score predicting Hard Refusal on Negative Prompts)
+================================================================================
+
+--- Llama 3 8B ---
+  Coefficient (B): -0.0719
+  Odds Ratio (OR): 0.9306
+  p-value: 0.277798
+  Pseudo R-squared: 0.5771
+  Significance: ns
+
+--- Llama 3.1 ---
+  Coefficient (B): -0.0393
+  Odds Ratio (OR): 0.9615
+  p-value: 0.005238
+  Pseudo R-squared: 0.3598
+  Significance: **
+
+--- Mistral 7B ---
+  Cannot fit logistic regression: no variance in outcome
+  (All responses are: hard_refusal = 0)
+
+--- Qwen 2.5 ---
+  Coefficient (B): -0.0219
+  Odds Ratio (OR): 0.9783
+  p-value: 0.000000
+  Pseudo R-squared: 0.3812
+  Significance: ***
+
+--- COMBINED MODEL (all models, negative prompts) ---
+  Henley coefficient (B): -0.0272
+  Odds Ratio (OR): 0.9732
+  p-value: 0.000000
+  Pseudo R-squared: 0.6042
+
+  Full model summary:
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:           hard_refusal   No. Observations:                  800
+Model:                          Logit   Df Residuals:                      795
+Method:                           MLE   Df Model:                            4
+Date:                Thu, 30 Apr 2026   Pseudo R-squ.:                  0.6042
+Time:                        03:25:28   Log-Likelihood:                -219.02
+converged:                      False   LL-Null:                       -553.31
+Covariance Type:            nonrobust   LLR p-value:                2.224e-143
+==========================================================================================
+                             coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+Intercept                  4.2333      0.415     10.197      0.000       3.420       5.047
+C(model)[T.Llama 3.1]      1.0503      0.285      3.682      0.000       0.491       1.609
+C(model)[T.Mistral 7B]   -25.3024   5857.116     -0.004      0.997   -1.15e+04    1.15e+04
+C(model)[T.Qwen 2.5]      -1.1440      0.327     -3.501      0.000      -1.784      -0.504
+henley_score              -0.0272      0.002    -12.597      0.000      -0.031      -0.023
+==========================================================================================
+
+Possibly complete quasi-separation: A fraction 0.25 of observations can be
+perfectly predicted. This might indicate that there is complete
+quasi-separation. In this case some parameters will not be identified.
+
+================================================================================
+SUMMARY TABLE: Cross-Model Comparison
+================================================================================
+
+Model           |  Neg Ref Top10 |  Neg Ref Bot10 |  V (neg) |   SL Top10 |   SL Bot10
+--------------------------------------------------------------------------------
+Llama 3 8B      |          25.0% |         100.0% |    0.764 |      28.7% |      21.0%
+Llama 3.1       |          52.0% |         100.0% |    0.550 |      23.4% |      19.5%
+Mistral 7B      |           0.0% |           0.0% |      N/A |      34.0% |      35.7%
+Qwen 2.5        |          16.0% |          85.0% |    0.680 |      50.7% |      58.1%
+
+================================================================================
+ANALYSIS COMPLETE
+================================================================================
+
+Files created:
+  1. combined_all_models.csv  - All 2,400 trials in one file
+  2. analysis_results.txt     - This output saved as text
+
+Next steps:
+  - Compare these numbers with the thesis draft
+  - Upload analysis_results.txt to your project knowledge
+  - Flag any discrepancies for discussion
+
+NOTE ON COLUMN MAPPING:
+  - 'dialogical_repression' in Mistral & Qwen files = 'hard_refusal'
+  - 'dialogical_repression' in Llama 3.1 file = 'safety_lecture'
+  - This reflects the corrected naming convention from the recoding process
