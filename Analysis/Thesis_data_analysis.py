@@ -14,11 +14,13 @@ HOW TO USE:
 6. Results will print to screen AND save to a file called
    'analysis_results.txt' in the same folder
 
-The four CSV files you need:
+The four CSV files:
 - global_taboos_2026_20260225_010835_CORRECTED.csv  (Llama 3 8B)
 - llama3_1_taboos_2026.csv                          (Llama 3.1)
 - mistral_taboos_2026.csv                           (Mistral 7B)
 - qwen2_5_taboos_20260324_002612.csv                (Qwen 2.5)
+
+The names of these files have changed in the course of organising them, so it may not be the same for you when trying to replicate these results
 ============================================================
 """
 
