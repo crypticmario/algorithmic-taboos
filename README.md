@@ -2,8 +2,8 @@
 
 Code and data repository for the Master's Research Project:
 
-**"Algorithmic Taboos: Dialogical Repression and the Differential Treatment
-of National Identity in Large Language Models"**
+**Algorithmic Taboos: Dialogical Repression and the Differential Treatment
+of National Identity in Large Language Models**
 
 Richard Anekwe | University of Limerick | 2026
 
